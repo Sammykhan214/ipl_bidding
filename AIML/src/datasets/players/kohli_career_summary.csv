@@ -1,0 +1,5 @@
+Format,Batting_M,Batting_Inn,Batting_Runs,Batting_BF,Batting_HS,Batting_Avg,Batting_SR,Batting_NO,Batting_4s,Batting_6s,Batting_50,Batting_100,Batting_200,Bowling_M,Bowling_Inn,Bowling_B,Bowling_Runs,Bowling_Wkts,Bowling_Avg,Bowling_Econ,Bowling_SR,Bowling_BBI,Bowling_BBM,Bowling_5w,Bowling_10w
+IPL,267,259,8661,6519,113,39.55,132.86,40,771,291,63,8,0,267,26,251,368,4,92.0,8.8,62.75,2/25,2/25,0,0
+ODI,302,290,14181,15192,183,57.88,93.35,45,1325,153,74,51,0,302,50,662,680,5,136.0,6.16,132.4,1/13,1/13,0,0
+T20,125,117,4188,3056,122,48.7,137.05,31,369,124,38,1,0,125,13,152,204,4,51.0,8.05,38.0,1/13,1/13,0,0
+Test,123,210,9230,16608,254,46.85,55.58,13,1027,30,31,30,7,123,11,175,84,0,0.0,2.88,0.0,0/0,0/0,0,0
