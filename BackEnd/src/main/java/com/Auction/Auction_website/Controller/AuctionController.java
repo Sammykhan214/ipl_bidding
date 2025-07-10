@@ -31,4 +31,10 @@ public class AuctionController {
         auctionService.moveToNextPlayer();
         return ResponseEntity.ok("Moved to next player.");
     }
+    @PostMapping("/reset")
+    public ResponseEntity<String> resetAuction() {
+        auctionService.resetAuction();
+        return ResponseEntity.ok("Auction reset successfully. You can start the Auction.");
+    }
+
 }

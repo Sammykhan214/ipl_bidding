@@ -85,4 +85,19 @@ public AuctionServiceImpl(AuctionState state,Player_Repo repo){
             throw new RuntimeException("No next player found. Auction may be over.");
 
     }
-}
+
+    @Override
+    public void resetAuction() {
+        List<Player>player=player_repo.findAll();
+
+        for(Player p:player){
+            if(p.getStatus()!=AuctionStatus.UNSOLD) {
+                p.setStatus(AuctionStatus.UNSOLD);
+                p.setTeam(null);
+            }
+    }
+        player_repo.saveAll(player);
+        state.setCurrentPlayerId(null);
+
+
+}}

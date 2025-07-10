@@ -4,6 +4,7 @@ import com.Auction.Auction_website.DTO.BidRequest;
 import com.Auction.Auction_website.Entity.Bid;
 import com.Auction.Auction_website.Entity.Player;
 import com.Auction.Auction_website.Entity.Team;
+import com.Auction.Auction_website.Enums.AuctionStatus;
 import com.Auction.Auction_website.Repository.Bid_Repo;
 import com.Auction.Auction_website.Repository.Player_Repo;
 import com.Auction.Auction_website.Repository.Team_Repo;
@@ -36,6 +37,7 @@ public class BidServiceImpl implements BidService {
        }
        player.setSoldPrice(req.getAmount());
        player.setTeam(team);
+       player.setStatus(AuctionStatus.SOLD);
        team.setBudget(team.getBudget()-req.getAmount());
        Bid bid=new Bid();
        bid.setAmount(req.getAmount());
