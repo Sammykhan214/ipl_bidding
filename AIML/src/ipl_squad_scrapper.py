@@ -1,62 +1,94 @@
 import requests
 from bs4 import BeautifulSoup
-import csv
+import pandas as pd
+import os
+import urllib.parse
 
-url = "https://www.cricbuzz.com/profiles/1413/virat-kohli"
-res = requests.get(url)
-res.raise_for_status()
-soup = BeautifulSoup(res.text, 'html.parser')
+def get_wikipedia_url(player_name):
+    return f"https://en.wikipedia.org/wiki/{urllib.parse.quote(player_name.replace(' ', '_'))}"
 
-def extract_career(section_title):
-    div = soup.find("div", text=section_title)
-    if not div:
-        raise ValueError(f"{section_title} section not found")
-    table = div.find_next("table")
-    headers = [th.get_text(strip=True) for th in table.find_all('th')[1:]]  # excluding first col
-    data = {}
-    for row in table.find_all('tr')[1:]:  # skip header row
-        cols = row.find_all('td')
-        format_name = cols[0].get_text(strip=True)
-        stats = [td.get_text(strip=True) for td in cols[1:]]
-        data[format_name] = dict(zip(headers, stats))
-    return headers, data
+def extract_infobox(soup):
+    infobox = soup.find("table", class_="infobox")
+    if not infobox:
+        return None
 
-# Extract batting and bowling sections
-bat_headers, batting_data = extract_career("Batting Career Summary")
-bowl_headers, bowling_data = extract_career("Bowling Career Summary")
+    personal_info = {}
+    international_info = {}
+    domestic_teams = []
 
-# Display in console
-print("=== Batting Career Summary ===")
-for fmt, stats in batting_data.items():
-    print(f"\nFormat: {fmt}")
-    for h in bat_headers:
-        print(f"  {h}: {stats[h]}")
+    current_section = "personal"
 
-print("\n=== Bowling Career Summary ===")
-for fmt, stats in bowling_data.items():
-    print(f"\nFormat: {fmt}")
-    for h in bowl_headers:
-        print(f"  {h}: {stats[h]}")
+    for row in infobox.find_all("tr"):
+        header = row.find("th")
+        data = row.find("td")
 
-# Save to CSV
-csv_file = "datasets/players/kohli_career_summary.csv"
-with open(csv_file, 'w', newline='') as f:
-    w = csv.writer(f)
-    # header row
-    top_header = ["Format"] \
-         + [f"Batting_{h}" for h in bat_headers] \
-         + [f"Bowling_{h}" for h in bowl_headers]
-    w.writerow(top_header)
+        if not header or not data:
+            continue
 
-    all_formats = sorted(set(batting_data) | set(bowling_data))
-    for fmt in all_formats:
-        row = [fmt]
-        b = batting_data.get(fmt, {})
-        o = bowling_data.get(fmt, {})
-        for h in bat_headers:
-            row.append(b.get(h, ""))
-        for h in bowl_headers:
-            row.append(o.get(h, ""))
-        w.writerow(row)
+        label = header.get_text(strip=True)
+        value = data.get_text(separator=" ", strip=True)
 
-print(f"\n✅ CSV saved: {csv_file}")
+        # Use keywords to categorize sections
+        if "International" in label:
+            current_section = "international"
+        elif "Domestic" in label or "Club" in label or "Team" in label:
+            current_section = "domestic"
+
+        if current_section == "personal":
+            personal_info[label] = value
+        elif current_section == "international":
+            international_info[label] = value
+        elif current_section == "domestic":
+            domestic_teams.append({label: value})
+
+    return personal_info, international_info, domestic_teams
+
+def extract_career_stats(soup, player_name):
+    tables = soup.find_all("table", class_="wikitable")
+    for table in tables:
+        if "Statistics" in table.text or "Career" in table.text:
+            try:
+                df = pd.read_html(str(table))[0]
+                df.insert(0, "Player", player_name)
+                return df
+            except:
+                continue
+    return None
+
+def scrape_player(player_name):
+    url = get_wikipedia_url(player_name)
+    try:
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()
+        soup = BeautifulSoup(response.text, 'html.parser')
+
+        personal_info, international_info, domestic_info = extract_infobox(soup)
+        stats_df = extract_career_stats(soup, player_name)
+
+        # Create output folder
+        os.makedirs("datasets/wikipedia_players", exist_ok=True)
+
+        # Save each section as a CSV
+        pd.DataFrame([personal_info]).to_csv(f"datasets/wikipedia_players/{player_name.replace(' ', '_')}_personal.csv", index=False)
+        pd.DataFrame([international_info]).to_csv(f"datasets/wikipedia_players/{player_name.replace(' ', '_')}_international.csv", index=False)
+        pd.DataFrame(domestic_info).to_csv(f"datasets/wikipedia_players/{player_name.replace(' ', '_')}_domestic.csv", index=False)
+        if stats_df is not None:
+            stats_df.to_csv(f"datasets/wikipedia_players/{player_name.replace(' ', '_')}_stats.csv", index=False)
+
+        print(f"✅ Scraped {player_name}")
+    except Exception as e:
+        print(f"❌ Failed for {player_name}: {e}")
+
+def process_players(player_list):
+    for player in player_list:
+        scrape_player(player)
+
+# 🔽 List of players you want to scrape
+players = [
+    "Virat Kohli",
+    "MS Dhoni",
+    "Rohit Sharma",
+    "Ravindra Jadeja"
+]
+
+process_players(players)
