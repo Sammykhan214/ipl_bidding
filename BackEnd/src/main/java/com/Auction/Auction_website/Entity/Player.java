@@ -1,4 +1,5 @@
 package com.Auction.Auction_website.Entity;
+import com.Auction.Auction_website.Enums.AuctionStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,10 +22,29 @@ public class Player {
 
     private Double soldPrice;
 
+    @Enumerated(EnumType.STRING)
+    private AuctionStatus status=AuctionStatus.UNSOLD;
+
     // 🔗 Many players can belong to one team
     @ManyToOne
     @JoinColumn(name = "team_id")
     private Team team; // team can be null if unsold
+
+    public AuctionStatus getStatus() {
+        return status;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setStatus(AuctionStatus status) {
+        this.status = status;
+    }
 
     public String getName() {
         return name;

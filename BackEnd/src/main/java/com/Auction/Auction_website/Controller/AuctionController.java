@@ -26,4 +26,9 @@ public class AuctionController {
         auctionService.startAuction(req.getStartPlayerId());
         return ResponseEntity.ok("Auction started for player ID: " + req.getStartPlayerId());
     }
+    @PostMapping("/next-player")
+    public ResponseEntity<String> moveToNextPlayer() {
+        auctionService.moveToNextPlayer();
+        return ResponseEntity.ok("Moved to next player.");
+    }
 }

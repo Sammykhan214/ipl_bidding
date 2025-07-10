@@ -1,4 +1,5 @@
 package com.Auction.Auction_website.Entity;
+import com.Auction.Auction_website.Enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
