@@ -1,6 +1,7 @@
 package com.Auction.Auction_website.Service.Impl;
 
 import com.Auction.Auction_website.Entity.Player;
+import com.Auction.Auction_website.Enums.AuctionStatus;
 import com.Auction.Auction_website.Repository.Player_Repo;
 import com.Auction.Auction_website.Service.PlayerService;
 import org.springframework.stereotype.Service;
@@ -19,5 +20,10 @@ public class PlayerServiceImpl implements PlayerService {
         List<Player>player=player_repo.findAll();
         Collections.sort(player, Comparator.comparing(Player::getId));
         return player;
+    }
+
+    @Override
+    public List<Player> getPlayerByStatus(AuctionStatus status) {
+        return player_repo.findByStatus(status);
     }
 }

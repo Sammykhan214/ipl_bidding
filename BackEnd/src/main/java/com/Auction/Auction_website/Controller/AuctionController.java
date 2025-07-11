@@ -36,5 +36,10 @@ public class AuctionController {
         auctionService.resetAuction();
         return ResponseEntity.ok("Auction reset successfully. You can start the Auction.");
     }
+    @PostMapping("/end")
+    public ResponseEntity<String> endAuction() {
+        auctionService.endAuction();
+        return ResponseEntity.ok("Auction ended manually.");
+    }
 
 }

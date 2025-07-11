@@ -9,5 +9,5 @@ public interface AuctionService {
     void startAuction(Long playerId);
     void moveToNextPlayer();
     void resetAuction();
-
+    void endAuction();
 }

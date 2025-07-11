@@ -100,4 +100,11 @@ public AuctionServiceImpl(AuctionState state,Player_Repo repo){
         state.setCurrentPlayerId(null);
 
 
-}}
+}
+
+    @Override
+    public void endAuction() {
+        state.setCurrentPlayerId(null);
+        System.out.println("🛑 Auction ended manually by admin.");
+    }
+}
