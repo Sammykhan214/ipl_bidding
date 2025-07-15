@@ -11,7 +11,9 @@ import com.Auction.Auction_website.Repository.Player_Repo;
 import com.Auction.Auction_website.Repository.Team_Repo;
 import com.Auction.Auction_website.Service.BidService;
 import com.Auction.Auction_website.Util.AuctionState;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -44,7 +46,10 @@ public class BidServiceImpl implements BidService {
        if(team.getBudget()<req.getAmount()){
            throw new RuntimeException("Insufficient Balance");
        }
-       Bid bid=new Bid();
+       if(req.getAmount()< player.getBasePrice())
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Bid amount cannot be less than ₹"+player.getBasePrice());
+
+        Bid bid=new Bid();
        bid.setAmount(req.getAmount());
        bid.setTeam(team);
        bid.setPlayer(player);

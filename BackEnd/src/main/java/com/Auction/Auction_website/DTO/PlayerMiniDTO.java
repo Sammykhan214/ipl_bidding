@@ -9,17 +9,22 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 public class PlayerMiniDTO {
     private Long id;
     private String name;
+    private String role;
+    private String nationality;
+    private Double basePrice;
+    private Double soldPrice;
     private AuctionStatus status;
-    private TeamDTO team;
 
     public PlayerMiniDTO(Player player) {
         this.id = player.getId();
         this.name = player.getName();
+        this.role = player.getRole();
+        this.nationality = player.getNationality();
+        this.basePrice = player.getBasePrice();
+        this.soldPrice = player.getSoldPrice();
         this.status = player.getStatus();
-        if(status==AuctionStatus.SOLD&&player.getTeam()!=null)
-        this.team = new TeamDTO(player.getTeam());
-    }
 
+    }
     public Long getId() {
         return id;
     }
@@ -44,12 +49,37 @@ public class PlayerMiniDTO {
         this.status = status;
     }
 
-    public TeamDTO getTeam() {
-        return team;
+
+    public String getRole() {
+        return role;
     }
 
-    public void setTeam(TeamDTO team) {
-        this.team = team;
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getNationality() {
+        return nationality;
+    }
+
+    public void setNationality(String nationality) {
+        this.nationality = nationality;
+    }
+
+    public Double getBasePrice() {
+        return basePrice;
+    }
+
+    public void setBasePrice(Double basePrice) {
+        this.basePrice = basePrice;
+    }
+
+    public Double getSoldPrice() {
+        return soldPrice;
+    }
+
+    public void setSoldPrice(Double soldPrice) {
+        this.soldPrice = soldPrice;
     }
 }
 

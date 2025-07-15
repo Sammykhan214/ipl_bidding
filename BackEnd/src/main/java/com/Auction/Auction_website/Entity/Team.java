@@ -18,6 +18,7 @@ public class Team {
     private Long id;
 
     private String name;
+    private Double budget;
 
     public String getName() {
         return name;
@@ -58,8 +59,6 @@ public class Team {
     public void setPlayers(List<Player> players) {
         this.players = players;
     }
-
-    private Double budget;
 
     // 🧩 One team is owned by one user
     @OneToOne
