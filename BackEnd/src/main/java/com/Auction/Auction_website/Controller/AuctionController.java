@@ -1,9 +1,7 @@
 package com.Auction.Auction_website.Controller;
 
-import com.Auction.Auction_website.DTO.AuctionRequest;
-import com.Auction.Auction_website.DTO.PlayerFullDTO;
+import com.Auction.Auction_website.Requests.AuctionRequest;
 import com.Auction.Auction_website.DTO.PlayerMiniDTO;
-import com.Auction.Auction_website.Entity.Player;
 import com.Auction.Auction_website.Service.AuctionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

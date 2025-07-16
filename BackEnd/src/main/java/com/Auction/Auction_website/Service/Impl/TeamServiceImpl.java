@@ -4,7 +4,6 @@ import com.Auction.Auction_website.DTO.TeamDTO;
 import com.Auction.Auction_website.DTO.TeamSummaryDTO;
 import com.Auction.Auction_website.DTO.TeamwithPlayersDTO;
 import com.Auction.Auction_website.Entity.Team;
-import com.Auction.Auction_website.Repository.TeamRepo;
 import com.Auction.Auction_website.Repository.Team_Repo;
 import com.Auction.Auction_website.Service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,7 @@ import java.util.List;
 @Service
 public class TeamServiceImpl implements TeamService {
     @Autowired
-    TeamRepo team_repo;
+    Team_Repo team_repo;
     @Override
     public List<TeamDTO> getAllTeams() {
         List<TeamDTO>teams=team_repo.findAll()

@@ -1,9 +1,8 @@
 package com.Auction.Auction_website.Controller;
 
 import com.Auction.Auction_website.DTO.BidDTO;
-import com.Auction.Auction_website.DTO.BidRequest;
+import com.Auction.Auction_website.Requests.BidRequest;
 import com.Auction.Auction_website.Service.BidService;
-import com.Auction.Auction_website.Service.Impl.BidServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

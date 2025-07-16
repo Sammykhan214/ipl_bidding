@@ -1,7 +1,7 @@
 package com.Auction.Auction_website.Service.Impl;
 
 import com.Auction.Auction_website.DTO.BidDTO;
-import com.Auction.Auction_website.DTO.BidRequest;
+import com.Auction.Auction_website.Requests.BidRequest;
 import com.Auction.Auction_website.Entity.Bid;
 import com.Auction.Auction_website.Entity.Player;
 import com.Auction.Auction_website.Entity.Team;
