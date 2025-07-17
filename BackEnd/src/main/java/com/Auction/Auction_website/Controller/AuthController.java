@@ -3,6 +3,7 @@ package com.Auction.Auction_website.Controller;
 import com.Auction.Auction_website.Entity.User;
 import com.Auction.Auction_website.Repository.User_Repo;
 import com.Auction.Auction_website.Requests.LoginRequest;
+import com.Auction.Auction_website.Jwt.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,6 +22,8 @@ public class AuthController {
     private User_Repo user_repo;
     @Autowired
     PasswordEncoder passwordEncoder;
+    @Autowired
+    JwtUtil jwtUtil;
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody User user) {
         // Check if email already exists
@@ -37,11 +40,17 @@ public class AuthController {
      User user=user_repo.findByEmail(req.getEmail()).orElseThrow(()-> new RuntimeException("❌ User not found"));
    if(!passwordEncoder.matches(req.getPassword(), user.getPassword()))
        return ResponseEntity.badRequest().body("❌ Invalid credentials");
+        // 🔐 Generate JWT token
+        String token = jwtUtil.generateToken(user.getEmail(), user.getRole().toString());
+
+        // ✅ Return token + user info
         Map<String, Object> response = new HashMap<>();
         response.put("message", "✅ Login successful");
+        response.put("token", token);
         response.put("userId", user.getId());
         response.put("name", user.getName());
         response.put("role", user.getRole());
+
         return ResponseEntity.ok(response);
     }
 
