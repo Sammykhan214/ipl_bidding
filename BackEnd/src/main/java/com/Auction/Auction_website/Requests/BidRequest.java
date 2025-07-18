@@ -6,6 +6,12 @@ public class BidRequest {
     private Long teamId;
     private Double amount;
 
+    public BidRequest(Long playerId, Long teamId, Double amount) {
+        this.playerId = playerId;
+        this.teamId = teamId;
+        this.amount = amount;
+    }
+
     public Long getPlayerId() {
         return playerId;
     }

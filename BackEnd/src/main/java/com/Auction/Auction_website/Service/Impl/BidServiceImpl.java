@@ -1,5 +1,6 @@
 package com.Auction.Auction_website.Service.Impl;
 
+import com.Auction.Auction_website.Controller.BidWebSocketController;
 import com.Auction.Auction_website.DTO.BidDTO;
 import com.Auction.Auction_website.Requests.BidRequest;
 import com.Auction.Auction_website.Entity.Bid;
@@ -11,6 +12,7 @@ import com.Auction.Auction_website.Repository.Player_Repo;
 import com.Auction.Auction_website.Repository.Team_Repo;
 import com.Auction.Auction_website.Service.BidService;
 import com.Auction.Auction_website.Util.AuctionState;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -25,6 +27,8 @@ public class BidServiceImpl implements BidService {
     private final Team_Repo team_repo;
     private final Player_Repo player_repo;
     private final AuctionState state;
+    @Autowired
+    BidWebSocketController bidWebSocketController;
     public BidServiceImpl(Bid_Repo bid_repo,AuctionState state,Team_Repo team_repo,Player_Repo player_repo){
         this.bid_repo=bid_repo;
         this.player_repo=player_repo;
@@ -52,15 +56,22 @@ public class BidServiceImpl implements BidService {
         Bid bid=new Bid();
        bid.setAmount(req.getAmount());
        bid.setTeam(team);
+
        bid.setPlayer(player);
        bid.setTime(LocalDateTime.now());
        bid_repo.save(bid);
-    //Auto-end logic
+//Bid Message broadcast to everyone
+       BidRequest bid_msg=new BidRequest(req.getPlayerId(),req.getTeamId(),req.getAmount());
+        bidWebSocketController.broadcastBidUpdate(bid_msg);
+
+
+       //Auto-end logic
     boolean unsold_player=player_repo.existsByStatus(AuctionStatus.UNSOLD);
     if(!unsold_player){
         state.setCurrentPlayerId(null);
         System.out.println("✅ Auction ended automatically — no unsold players remaining.");
     }
+
     }
 
     @Override

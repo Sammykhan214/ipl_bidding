@@ -6,7 +6,8 @@ import lombok.*;
 @Entity
 @Table(name = "players")
 
-
+@NoArgsConstructor
+@AllArgsConstructor
 public class Player {
 
     @Id
