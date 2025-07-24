@@ -14,7 +14,7 @@ public class webSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry){
         // This is the endpoint clients will connect to
         registry.addEndpoint("/ws_auction").
-                setAllowedOrigins("*").withSockJS();
+                setAllowedOriginPatterns("*").withSockJS();
     }
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {

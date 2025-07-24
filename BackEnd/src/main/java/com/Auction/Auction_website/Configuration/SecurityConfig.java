@@ -20,7 +20,9 @@ public class SecurityConfig {
                 .csrf(req->req.disable()) // disable csrf for APIs
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auction/auth/**").permitAll()
+                                .requestMatchers("/ws_auction/**","topic/**","app/**").permitAll()
                    .requestMatchers("/auction/admin/**").hasAnyRole("ADMIN")
+                                .requestMatchers("/import/*").permitAll()
                         .anyRequest().authenticated()
                         // protect other APIs
                 ).addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

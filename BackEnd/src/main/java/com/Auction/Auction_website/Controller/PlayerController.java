@@ -1,11 +1,9 @@
 package com.Auction.Auction_website.Controller;
 
 import com.Auction.Auction_website.DTO.PlayerFullDTO;
-import com.Auction.Auction_website.Entity.Player;
 import com.Auction.Auction_website.Enums.AuctionStatus;
 import com.Auction.Auction_website.Service.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.amqp.RabbitProperties;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +15,7 @@ import java.util.List;
 public class PlayerController {
     @Autowired
     PlayerService player_service;
+
     @GetMapping
     public ResponseEntity<List<PlayerFullDTO>> getPlayersByStatus(@RequestParam(required = false)
                                                            String status){
@@ -43,5 +42,6 @@ return ResponseEntity.badRequest().body(Collections.emptyList());
             return ResponseEntity.notFound().build();
         }
     }
+
 
 }

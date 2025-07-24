@@ -41,7 +41,7 @@ public class BidServiceImpl implements BidService {
         Player player=player_repo.findById(req.getPlayerId()).orElseThrow(
                 ()-> new RuntimeException("Player Not found")
         );
-       Team team=team_repo.findById(req.getPlayerId()).orElseThrow(
+       Team team=team_repo.findById(req.getTeamId()).orElseThrow(
                 ()-> new RuntimeException("Team Not found")
         );
         if (player.getStatus() == AuctionStatus.SOLD) {

@@ -21,6 +21,11 @@ public class Player {
     private Double basePrice;
 
     private Double soldPrice;
+    @OneToOne(mappedBy = "player", cascade = CascadeType.ALL)
+    private PlayerStats playerStats;
+
+    private String battingStyle;
+    private String bowlingStyle;
 
     private String nationality;
     @Enumerated(EnumType.STRING)
@@ -39,6 +44,14 @@ public class Player {
         this.nationality = nationality;
     }
 
+    public PlayerStats getPlayerStats() {
+        return playerStats;
+    }
+
+    public void setPlayerStats(PlayerStats playerStats) {
+        this.playerStats = playerStats;
+    }
+
     public AuctionStatus getStatus() {
         return status;
     }
@@ -49,6 +62,22 @@ public class Player {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getBattingStyle() {
+        return battingStyle;
+    }
+
+    public void setBattingStyle(String battingStyle) {
+        this.battingStyle = battingStyle;
+    }
+
+    public String getBowlingStyle() {
+        return bowlingStyle;
+    }
+
+    public void setBowlingStyle(String bowlingStyle) {
+        this.bowlingStyle = bowlingStyle;
     }
 
     public void setStatus(AuctionStatus status) {
