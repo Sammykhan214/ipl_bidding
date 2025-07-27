@@ -34,10 +34,10 @@ public class PlayerImportService {
     }
     private Integer parseIntIfNonZero(String value) {
         try {
-            if (value == null || value.trim().isEmpty() || value.equalsIgnoreCase("N/A")) return null;
+            if (value == null || value.trim().isEmpty() || value.equalsIgnoreCase("N/A")) return 0;
             Double d = Double.parseDouble(value.trim());
             int intValue = d.intValue();
-            return intValue == 0 ? null : intValue;
+            return intValue;
         } catch (NumberFormatException e) {
             log.warn("Invalid int: {}", value);
             return null;
@@ -46,9 +46,9 @@ public class PlayerImportService {
 
     private Double parseDoubleIfNonZero(String value) {
         try {
-            if (value == null || value.trim().isEmpty() || value.equalsIgnoreCase("N/A")) return null;
+            if (value == null || value.trim().isEmpty() || value.equalsIgnoreCase("N/A")) return 0.0;
             double doubleValue = Double.parseDouble(value.trim());
-            return doubleValue == 0.0 ? null : doubleValue;
+            return doubleValue;
         } catch (NumberFormatException e) {
             log.warn("Invalid double: {}", value);
             return null;

@@ -24,8 +24,14 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private Team team;
+    public User(){}
+    public User(Long id, String name, String email, String password, Role role) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
 
     public Long getId() {
         return id;
@@ -67,11 +73,4 @@ public class User {
         this.role = role;
     }
 
-    public Team getTeam() {
-        return team;
-    }
-
-    public void setTeam(Team team) {
-        this.team = team;
-    }
 }

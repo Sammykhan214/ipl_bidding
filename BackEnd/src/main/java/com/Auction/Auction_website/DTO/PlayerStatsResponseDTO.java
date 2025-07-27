@@ -1,13 +1,9 @@
-package com.Auction.Auction_website.Entity;
+package com.Auction.Auction_website.DTO;
 
-import jakarta.persistence.*;
+import lombok.Data;
 
-@Entity
-public class PlayerStats {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String name;
+@Data
+public class PlayerStatsResponseDTO {
     private Integer runs;
     private Double batting_average;
     private Double strikeRate;
@@ -20,25 +16,6 @@ public class PlayerStats {
     private Integer wickets;
     private Integer fiveWicketHauls;
     private Double bowling_average;
-@OneToOne
-@JoinColumn(name = "player_id")
-Player player;
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public Integer getRuns() {
         return runs;
@@ -46,14 +23,6 @@ Player player;
 
     public void setRuns(Integer runs) {
         this.runs = runs;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public Double getBatting_average() {
@@ -136,4 +105,3 @@ Player player;
         this.bowling_average = bowling_average;
     }
 }
-

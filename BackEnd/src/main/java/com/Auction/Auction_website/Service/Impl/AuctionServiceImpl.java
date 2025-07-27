@@ -30,13 +30,23 @@ public AuctionServiceImpl(AuctionState state,Player_Repo repo,Bid_Repo bid_repo,
 }
     @Override
     public PlayerMiniDTO getCurrentPlayer() {
-     Long curr_playerId=state.getCurrentPlayerId();
-        if(curr_playerId==null)
-            throw new RuntimeException("No player is currently in auction");
-        Player player=player_repo.findById(curr_playerId).
-                orElseThrow(()->new RuntimeException(
-                "No player found with id:"+curr_playerId));
+        Long curr_playerId = state.getCurrentPlayerId();
+
+        // ✅ If auction hasn't started yet, auto-start for first player (id=1 or first unsold player)
+        if (curr_playerId == null) {
+            Player firstUnsold = player_repo.findFirstByStatusOrderByIdAsc(AuctionStatus.UNSOLD);
+            if (firstUnsold != null) {
+                startAuction(firstUnsold.getId());
+                curr_playerId = firstUnsold.getId();
+            } else {
+                throw new RuntimeException("No players available to start auction");
+            }
+        }
+
+        Player player = player_repo.findById(curr_playerId)
+                .orElseThrow(() -> new RuntimeException("No player found with id:" +state.getCurrentPlayerId()));
         return new PlayerMiniDTO(player);
+
     }
 
     @Override
@@ -149,5 +159,10 @@ return state.getCurrentPlayerId()!=null;
         team_repo.save(team);
         System.out.println("✅ Player " + player.getName() + " SOLD to " + team.getName() +
                 " for ₹" + HighestBid.getAmount());
+        try {
+            moveToNextPlayer();
+        } catch (Exception e) {
+            System.out.println("🏁 Auction ended. No next player found.");
+        }
     }
 }

@@ -1,7 +1,7 @@
 package com.Auction.Auction_website.Entity;
 
 
-
+import com.Auction.Auction_website.Entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -18,7 +18,7 @@ public class Player {
 
     private String role; // e.g. Batsman, Bowler, All-rounder
 
-    private Double basePrice;
+    private Double basePrice=100000.0;
 
     private Double soldPrice;
     @OneToOne(mappedBy = "player", cascade = CascadeType.ALL)

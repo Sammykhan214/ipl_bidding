@@ -13,5 +13,6 @@ public interface Player_Repo extends JpaRepository<Player,Long> {
       List<Player> findByStatus(AuctionStatus status);
       boolean existsByStatus(AuctionStatus status);
       Optional<Player> findByName(String name);
+      Player findFirstByStatusOrderByIdAsc(AuctionStatus status);
 
 }

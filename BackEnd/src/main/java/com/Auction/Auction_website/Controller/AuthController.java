@@ -4,6 +4,7 @@ import com.Auction.Auction_website.Entity.User;
 import com.Auction.Auction_website.Repository.User_Repo;
 import com.Auction.Auction_website.Requests.LoginRequest;
 import com.Auction.Auction_website.Jwt.JwtUtil;
+import com.Auction.Auction_website.Service.Impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,19 +25,20 @@ public class AuthController {
     PasswordEncoder passwordEncoder;
     @Autowired
     JwtUtil jwtUtil;
+    @Autowired
+    UserServiceImpl user_serv;
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody User user) {
         // Check if email already exists
         if (user_repo.findByEmail(user.getEmail()).isPresent()) {
-            return ResponseEntity.badRequest().body("❌ Email already exists");
+            return ResponseEntity.badRequest().body("❌ Email already exists.Try to Login.");
         }
-        // Save user (plain password for now)
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user_repo.save(user);
+        user_serv.register(user);
         return ResponseEntity.ok("✅ User registered successfully");
     }
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest req){
+        System.out.println(req.getEmail());
      User user=user_repo.findByEmail(req.getEmail()).orElseThrow(()-> new RuntimeException("❌ User not found"));
    if(!passwordEncoder.matches(req.getPassword(), user.getPassword()))
        return ResponseEntity.badRequest().body("❌ Invalid credentials");
