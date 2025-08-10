@@ -54,7 +54,7 @@ This is a **Spring Boot-based IPL Auction Management System** that allows users 
 ### **Clone the Repository**
 
 ```sh
-git clone https://github.com/your-username/ipl-auction-backend.git
+git clone https://github.com/Sammykhan214/ipl_bidding.git
 cd ipl-auction-backend
 
 ### **Configure Database**
