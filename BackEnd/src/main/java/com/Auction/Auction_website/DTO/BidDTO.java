@@ -1,11 +1,10 @@
 package com.Auction.Auction_website.DTO;
 
 import com.Auction.Auction_website.Entity.Bid;
-import lombok.Data;
+
 
 import java.time.LocalDateTime;
 
-@Data
 public class BidDTO {
         private Long id;
         private Double amount;

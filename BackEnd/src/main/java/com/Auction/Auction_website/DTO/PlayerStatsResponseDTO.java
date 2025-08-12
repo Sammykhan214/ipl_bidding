@@ -1,8 +1,5 @@
 package com.Auction.Auction_website.DTO;
 
-import lombok.Data;
-
-@Data
 public class PlayerStatsResponseDTO {
     private Integer runs;
     private Double batting_average;

@@ -1,5 +1,7 @@
 package com.Auction.Auction_website.Controller;
 
+import com.Auction.Auction_website.Entity.Player;
+import com.Auction.Auction_website.Mediator.AuctionMediator;
 import com.Auction.Auction_website.Requests.AuctionRequest;
 import com.Auction.Auction_website.DTO.PlayerMiniDTO;
 import com.Auction.Auction_website.Service.AuctionService;
@@ -14,10 +16,12 @@ import java.util.Map;
 @RequestMapping("/auction")
 public class AuctionController {
     private final AuctionService auctionService;
+    private final AuctionMediator auctionMediator;
 
     @Autowired
-    public AuctionController(AuctionService auctionService) {
+    public AuctionController(AuctionService auctionService,AuctionMediator mediator) {
         this.auctionService = auctionService;
+        this.auctionMediator=mediator;
     }
     @GetMapping("/current-player")
     public ResponseEntity<PlayerMiniDTO> getCurrentPlayer(){
@@ -31,8 +35,8 @@ public class AuctionController {
     }
     @PostMapping("/next-player")
     public ResponseEntity<String> moveToNextPlayer() {
-        auctionService.moveToNextPlayer();
-        return ResponseEntity.ok("Moved to next player.");
+      Player player= auctionService.moveToNextPlayer();
+        return ResponseEntity.ok("Moved to next player."+player);
     }
     @PostMapping("/reset")
     public ResponseEntity<String> resetAuction() {
@@ -54,9 +58,10 @@ public class AuctionController {
     }
     @PostMapping("/finalize/{playerId}")
     public ResponseEntity<String> finalizeBid(@PathVariable Long playerId) {
-        auctionService.finaliseBid(playerId);
+        auctionMediator.handleFinalizeBid(playerId);
         return ResponseEntity.ok("✅ Bid finalized");
     }
+
 
 
 }

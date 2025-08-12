@@ -1,5 +1,6 @@
 package com.Auction.Auction_website.Service.Impl;
 
+import com.Auction.Auction_website.Entity.Team;
 import com.Auction.Auction_website.Entity.User;
 import com.Auction.Auction_website.Enums.Role;
 import com.Auction.Auction_website.Repository.Team_Repo;
@@ -31,6 +32,16 @@ public class UserServiceImpl {
         user.setEmail(req.getEmail());
         user.setPassword(passwordEncoder.encode(req.getPassword()));
         user.setRole(req.getRole());
+
+
+        if (user.getRole().equals(Role.TEAM)) {
+            Team team = new Team();
+            team.setName(user.getName());
+            team.setBudget(100000000.00);
+            team.setUser(user);
+            team_repo.save(team);
+        }
+
         return user_repo.save(user);
     }
 }

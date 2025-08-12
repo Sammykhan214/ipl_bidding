@@ -1,9 +1,7 @@
 package com.Auction.Auction_website.DTO;
 
 import com.Auction.Auction_website.Entity.Player;
-import lombok.Data;
 
-@Data
 public class PlayerSummaryDTO {
     private String name;
     private String role;

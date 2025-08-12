@@ -1,0 +1,124 @@
+package com.Auction.Auction_website.Entity;
+import com.Auction.Auction_website.Enums.AuctionStatus;
+import jakarta.persistence.*;
+
+
+@Entity
+@Table(name = "players")
+
+public class Player {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+
+    private String role; // e.g. Batsman, Bowler, All-rounder
+
+    private Double basePrice=100000.0;
+
+    private Double soldPrice;
+    @OneToOne(mappedBy = "player", cascade = CascadeType.ALL)
+    private PlayerStats playerStats;
+
+    private String battingStyle;
+    private String bowlingStyle;
+
+    private String nationality;
+    @Enumerated(EnumType.STRING)
+    private AuctionStatus status=AuctionStatus.UNSOLD;
+
+    // 🔗 Many players can belong to one team
+    @ManyToOne
+    @JoinColumn(name = "team_id")
+    private Team team; // team can be null if unsold
+
+    public String getNationality() {
+        return nationality;
+    }
+
+    public void setNationality(String nationality) {
+        this.nationality = nationality;
+    }
+
+    public PlayerStats getPlayerStats() {
+        return playerStats;
+    }
+
+    public void setPlayerStats(PlayerStats playerStats) {
+        this.playerStats = playerStats;
+    }
+
+    public AuctionStatus getStatus() {
+        return status;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getBattingStyle() {
+        return battingStyle;
+    }
+
+    public void setBattingStyle(String battingStyle) {
+        this.battingStyle = battingStyle;
+    }
+
+    public String getBowlingStyle() {
+        return bowlingStyle;
+    }
+
+    public void setBowlingStyle(String bowlingStyle) {
+        this.bowlingStyle = bowlingStyle;
+    }
+
+    public void setStatus(AuctionStatus status) {
+        this.status = status;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public Double getBasePrice() {
+        return basePrice;
+    }
+
+    public void setBasePrice(Double basePrice) {
+        this.basePrice = basePrice;
+    }
+
+    public Double getSoldPrice() {
+        return soldPrice;
+    }
+
+    public void setSoldPrice(Double soldPrice) {
+        this.soldPrice = soldPrice;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+}

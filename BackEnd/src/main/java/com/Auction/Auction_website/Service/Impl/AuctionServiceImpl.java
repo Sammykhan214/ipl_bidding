@@ -65,46 +65,46 @@ public AuctionServiceImpl(AuctionState state,Player_Repo repo,Bid_Repo bid_repo,
     }
 
     @Override
-    public void moveToNextPlayer() {
-            Long currentPlayerId = state.getCurrentPlayerId();
 
-            // Get all players sorted by ID
-            List<Player> allPlayers = player_repo.findAll();
+    public Player moveToNextPlayer() {
+        Long currentPlayerId = state.getCurrentPlayerId();
+
+        List<Player> allPlayers = player_repo.findAll();
         Collections.sort(allPlayers, Comparator.comparing(Player::getId));
 
-            boolean foundCurrent = false;
-            Player currentPlayer = null;
+        boolean foundCurrent = false;
+        Player currentPlayer = null;
 
-            for (Player player : allPlayers) {
-                if (foundCurrent) {
-                    // Found next player
-                    player.setStatus(AuctionStatus.ON_AUCTION);
-                    state.setCurrentPlayerId(player.getId());
-                   player_repo.save(player);
+        for (Player player : allPlayers) {
+            if (foundCurrent) {
+                // Found next player
+                player.setStatus(AuctionStatus.ON_AUCTION);
+                state.setCurrentPlayerId(player.getId());
+                player_repo.save(player);
 
-                    if (currentPlayer != null) {
-                        // update previous player status if not already sold
-                        if (currentPlayer.getTeam() == null) {
-                            currentPlayer.setStatus(AuctionStatus.UNSOLD);
-                        } else {
-                            currentPlayer.setStatus(AuctionStatus.SOLD);
-                        }
-                        player_repo.save(currentPlayer);
+                if (currentPlayer != null) {
+                    // Update previous player status
+                    if (currentPlayer.getTeam() == null) {
+                        currentPlayer.setStatus(AuctionStatus.UNSOLD);
+                    } else {
+                        currentPlayer.setStatus(AuctionStatus.SOLD);
                     }
-
-                    return;
+                    player_repo.save(currentPlayer);
                 }
 
-                if (player.getId().equals(currentPlayerId)) {
-                    foundCurrent = true;
-                    currentPlayer = player;
-                }
+                return player; // ✅ Return next player for mediator to broadcast
             }
 
-            state.setCurrentPlayerId(null);
-            throw new RuntimeException("No next player found. Auction may be over.");
+            if (player.getId().equals(currentPlayerId)) {
+                foundCurrent = true;
+                currentPlayer = player;
+            }
+        }
 
+        state.setCurrentPlayerId(null);
+        return null; // Auction over
     }
+
 
     @Override
     public void resetAuction() {
@@ -159,10 +159,6 @@ return state.getCurrentPlayerId()!=null;
         team_repo.save(team);
         System.out.println("✅ Player " + player.getName() + " SOLD to " + team.getName() +
                 " for ₹" + HighestBid.getAmount());
-        try {
-            moveToNextPlayer();
-        } catch (Exception e) {
-            System.out.println("🏁 Auction ended. No next player found.");
-        }
+
     }
 }

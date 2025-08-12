@@ -1,28 +1,26 @@
 package com.Auction.Auction_website.Controller;
 
 import com.Auction.Auction_website.DTO.BidDTO;
+import com.Auction.Auction_website.Mediator.AuctionMediator;
 import com.Auction.Auction_website.Requests.BidRequest;
 import com.Auction.Auction_website.Service.BidService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
 @RestController
 @RequestMapping("/auction/bid")
 public class BidController {
-    private final BidService bidService;
+    private final AuctionMediator auctionMediator;
 
-    public BidController(BidService bidService) {
-        this.bidService = bidService;
+    public BidController(AuctionMediator auctionMediator) {
+        this.auctionMediator = auctionMediator;
     }
+
     @PostMapping
-    public ResponseEntity<String>placeBid(@RequestBody BidRequest req){
-        bidService.placeBid(req);
+    public ResponseEntity<String> placeBid(@RequestBody BidRequest req) {
+        auctionMediator.handlePlaceBid(req);
         return ResponseEntity.ok("Bid Placed Successfully");
     }
-    @GetMapping("/player/{playerId}")
-    public ResponseEntity<List<BidDTO>> getPlayerBids(@PathVariable Long playerId) {
-        return ResponseEntity.ok(bidService.getBidsForPlayer(playerId));
-    }
 }
+

@@ -1,7 +1,5 @@
 package com.Auction.Auction_website.DTO;
 
-import lombok.Getter;
-import lombok.Setter;
 
 
 public class BidRequest {

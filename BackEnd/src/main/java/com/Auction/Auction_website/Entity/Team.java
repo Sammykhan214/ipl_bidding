@@ -3,14 +3,13 @@ package com.Auction.Auction_website.Entity;
 
 import com.Auction.Auction_website.Entity.User;
 import jakarta.persistence.*;
-import lombok.*;
+
 
 import java.util.List;
 
 @Entity
 @Table(name = "teams")
-@NoArgsConstructor
-@AllArgsConstructor
+
 public class Team {
 
     @Id

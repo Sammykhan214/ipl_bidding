@@ -9,7 +9,7 @@ import java.util.List;
 public interface AuctionService {
     PlayerMiniDTO getCurrentPlayer();
     void startAuction(Long playerId);
-    void moveToNextPlayer();
+    Player moveToNextPlayer();
     void resetAuction();
     void endAuction();
     Boolean isAuctionRunning();

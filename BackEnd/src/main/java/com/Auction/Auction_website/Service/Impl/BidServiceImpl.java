@@ -60,9 +60,7 @@ public class BidServiceImpl implements BidService {
        bid.setPlayer(player);
        bid.setTime(LocalDateTime.now());
        bid_repo.save(bid);
-//Bid Message broadcast to everyone
-       BidRequest bid_msg=new BidRequest(req.getPlayerId(),req.getTeamId(),req.getAmount());
-        bidWebSocketController.broadcastBidUpdate(bid_msg);
+
 
 
        //Auto-end logic

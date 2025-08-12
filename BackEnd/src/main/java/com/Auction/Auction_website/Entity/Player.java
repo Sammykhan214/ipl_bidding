@@ -1,13 +1,11 @@
 package com.Auction.Auction_website.Entity;
 import com.Auction.Auction_website.Enums.AuctionStatus;
 import jakarta.persistence.*;
-import lombok.*;
 
 @Entity
 @Table(name = "players")
 
-@NoArgsConstructor
-@AllArgsConstructor
+
 public class Player {
 
     @Id
